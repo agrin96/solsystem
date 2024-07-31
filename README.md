@@ -6,6 +6,12 @@ Includes some endpoints specific only to Helius and the Metaplex DAAS API for
 retrieving asset data.
 
 
+## Why + Plans
+After trying the official solana python + solders packages I was left feeling like they were an afterthought of development and weren't supported too well. The API wasn't to my liking so I decided to develop something more pythonic and cleaner.
+
+As I work on solana projects I plan to add further functionality to this API. One of the goals is to integrate a DEX API as well, likely from jupiter.
+
+
 ## Version Note
 
 This API was built with Python 3.12 and the latest package versions available at the time. The purpose was to take advantage of the great typing additions that have come to python and pydantic up to version 3.12. The library can fairly easily be backported to earlier versions of python, but it was not in the current scope of the author's work. 

@@ -5,6 +5,7 @@ description = "Type-safe Solana RPC http/websocket API with a focus on Helius an
 authors = [
     {name = "Aleksandr Grin", email = "bytebrushsoftware@gmail.com"},
 ]
+keywords = ["solana", "blockchain", "web3"]
 classifiers = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',

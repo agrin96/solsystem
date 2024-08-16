@@ -5,6 +5,7 @@ from pydantic import (
     ConfigDict,
     AliasPath,
     field_validator,
+    model_validator,
 )
 from enum import StrEnum, auto
 from pydantic.alias_generators import to_camel
@@ -24,6 +25,8 @@ from SolSystem.Models.TokenAccount import TokenBalance
 from SolSystem.Models.Transactions.InnerInstruction import (
     InnerInstruction,
     Instruction,
+    ParsedInstruction,
+    KnownParsedInstruction,
 )
 
 
@@ -51,6 +54,12 @@ class TransactionEncoding(StrEnum):
     JSON_PARSED = "jsonParsed"
     BASE64      = "base64"
     BASE58      = "base58"
+
+
+
+class AccountSource(StrEnum):
+    LOOKUP_TABLE = "lookupTable"
+    TRANSACTION = "transaction"
 
 
 
@@ -250,6 +259,26 @@ class TransactionMessageHeader(BaseModel):
 
 
 
+class ParsedAccountKey(BaseModel):
+    """### Summary
+    When returning jsonparsed data the account keys contain additional information
+    represented here.
+
+    ### Parameters:
+    `pubkey:` The base58 public key of the account
+
+    `signer:` Whether this key signed the transaction
+
+    `source:` Source of this key
+
+    `writable:` Whether this is a writable address."""
+    pubkey: PublicKey
+    signer: bool
+    source: AccountSource
+    writable: bool
+
+
+
 class TransactionMessage(BaseModel):
     """### Summary
     Content of one transaction. For more information see 
@@ -276,10 +305,10 @@ class TransactionMessage(BaseModel):
         populate_by_name = True,
     )
 
-    account_keys: list[PublicKey] = []
-    header: TransactionMessageHeader
+    account_keys: list[PublicKey] | list[ParsedAccountKey]
+    header: TransactionMessageHeader | None = None
     recent_blockhash: Base58Str
-    instructions: list[Instruction]= []
+    instructions: list[Instruction] | list[ParsedInstruction | KnownParsedInstruction]
     address_table_lookups: list[AddressTableLookup] | None = None
 
 
@@ -311,9 +340,21 @@ class EncodedTransaction(BaseModel):
     A transaction object can be a encoded string if the encoding parameter is
     appropriately set in the request object. In such a case the returned data
     is represented as an encoded string and the encoding returned."""
-    data: str = Field(validation_alias = AliasPath("transaction",0))
-    encoding: Encoding = Field(validation_alias = AliasPath("transaction",1))
+    data: str
+    encoding: Encoding
 
+
+    @model_validator( mode = "before")
+    def decode_list(cls, value: Any) -> dict:
+        """### Summary
+        For parsing the speial case where the input is just a list rather than
+        a dictionary."""
+        if not isinstance(value, list):
+            raise ValueError(F"Unrecognized value {value} for EncodedTransaction")
+        if len(value) != 2:
+            raise ValueError(F"Unexpected value length {value} for EncodedTransaction")
+        
+        return {"data": value[0], "encoding": value[1]}
 
 
 

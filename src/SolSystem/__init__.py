@@ -117,6 +117,9 @@ from .Models import (
     Reward,
     TransactionEncoding,
     RewardType,
+    ParsedInstruction,
+    KnownParsedInstruction,
+    AccountSource,
     Int8,
     Int16,
     Int32,
@@ -310,6 +313,9 @@ __all__ = [
     "Reward",
     "TransactionEncoding",
     "RewardType",
+    "ParsedInstruction",
+    "KnownParsedInstruction",
+    "AccountSource",
 
     # Data Types
     "Int8",

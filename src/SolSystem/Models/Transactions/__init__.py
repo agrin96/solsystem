@@ -12,6 +12,8 @@ Exports RPC Methods:
 Exports Models:
 - #### InnerInstruction
 - #### Instruction
+- #### ParsedInstruction
+- #### KnownParsedInstruction
 - #### SimulatedTransaction
 - #### SignatureStatus
 - #### TransactionSignature
@@ -28,6 +30,7 @@ Exports Models:
 - #### Reward
 - #### TransactionEncoding
 - #### RewardType
+- #### AccountSource
 """
 from .Methods.GetSignaturesForAddress import GetSignaturesForAddress
 from .Methods.GetSignatureStatuses import GetSignatureStatus
@@ -38,8 +41,10 @@ from .Methods.SendTransaction import SendTransaction
 from .Methods.SimulateTransaction import SimulateTransaction
 
 from .InnerInstruction import (
-    InnerInstruction,
     Instruction,
+    InnerInstruction,
+    ParsedInstruction,
+    KnownParsedInstruction,
 )
 from .Transaction import (
     SimulatedTransaction,
@@ -59,6 +64,7 @@ from .Transaction import (
     Reward,
     TransactionEncoding,
     RewardType,
+    AccountSource,
 )
 
 __all__ = [
@@ -70,6 +76,8 @@ __all__ = [
     "RequestAirdrop",
     "SendTransaction",
     "SimulateTransaction",
+    "ParsedInstruction",
+    "KnownParsedInstruction",
 
     # Models
     "InnerInstruction",
@@ -91,4 +99,5 @@ __all__ = [
     "Reward",
     "TransactionEncoding",
     "RewardType",
+    "AccountSource",
 ]

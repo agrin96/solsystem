@@ -1,7 +1,7 @@
 from typing import Any
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator, Field, AliasPath
 from pydantic.alias_generators import to_camel
-from SolSystem.Models.Common import Base58Str
+from SolSystem.Models.Common import Base58Str, PublicKey
 
 
 
@@ -26,7 +26,79 @@ class Instruction(BaseModel):
     program_id_index: int
     accounts: list[int]
     data: Base58Str | None = None
-    stack_height: Any
+    stack_height: int | None = None
+
+    @field_validator("*", mode = "before")
+    def prepare_empty_fields(cls, v: Any) -> Any:
+        """### Summary
+        Instead of NULL the API tends to return empty strings, so we handle that
+        by converting to None in the pre validator"""
+        if v == "":
+            return None
+        else:
+            return v
+        
+
+
+class ParsedInstruction(BaseModel):
+    """### Parameters
+    `program:` The name of the program being invoked
+
+    `program_id:` The address of the program being invoked
+
+    `data:` Data associated with the program being invoked if it couldn't be
+    parsed
+
+    `parsed:` The parsed instruction data if available.
+
+    `accounts:` Accounts associated with the transaction if relavent.
+
+    `stack_height:` UNKNOWN, present in output, but not in documentation."""
+    model_config = ConfigDict(
+        alias_generator = to_camel,
+        populate_by_name = True,
+    )
+
+    program_id: PublicKey
+    data: Base58Str | None = None
+    accounts: list[PublicKey] | None
+    stack_height: int | None = None
+
+    @field_validator("*", mode = "before")
+    def prepare_empty_fields(cls, v: Any) -> Any:
+        """### Summary
+        Instead of NULL the API tends to return empty strings, so we handle that
+        by converting to None in the pre validator"""
+        if v == "":
+            return None
+        else:
+            return v
+        
+
+
+class KnownParsedInstruction(BaseModel):
+    """### Parameters
+    `program:` The name of the program being invoked
+
+    `program_id:` The address of the program being invoked
+
+    `info:` The parsed instruction data if available.
+    
+    `type:` The parsed instruction name if available.
+
+    `accounts:` Accounts associated with the transaction if relavent.
+
+    `stack_height:` UNKNOWN, present in output, but not in documentation."""
+    model_config = ConfigDict(
+        alias_generator = to_camel,
+        populate_by_name = True,
+    )
+
+    program_id: PublicKey
+    program: str
+    info: dict[str, Any] = Field(validation_alias = AliasPath("parsed", "info"))
+    type: str = Field(validation_alias = AliasPath("parsed", "type"))
+    stack_height: int | None = None
 
     @field_validator("*", mode = "before")
     def prepare_empty_fields(cls, v: Any) -> Any:
@@ -54,4 +126,4 @@ class InnerInstruction(BaseModel):
     `instructions:` Ordered list of inner program instructions that were
     invoked during a single transaction instruction."""
     index: int
-    instructions: list[Instruction]
+    instructions: list[Instruction] | list[ParsedInstruction | KnownParsedInstruction]

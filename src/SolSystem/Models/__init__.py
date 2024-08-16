@@ -154,6 +154,9 @@ from .Transactions import (
     Reward,
     TransactionEncoding,
     RewardType,
+    ParsedInstruction,
+    KnownParsedInstruction,
+    AccountSource,
 )
 from .Common import (
     Int8,
@@ -351,6 +354,9 @@ __all__ = [
     "Reward",
     "TransactionEncoding",
     "RewardType",
+    "ParsedInstruction",
+    "KnownParsedInstruction",
+    "AccountSource",
 
     # Data Types
     "Int8",

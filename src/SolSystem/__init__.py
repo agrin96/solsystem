@@ -120,6 +120,7 @@ from .Models import (
     ParsedInstruction,
     KnownParsedInstruction,
     AccountSource,
+    ParsedAccountKey,
     Int8,
     Int16,
     Int32,
@@ -152,6 +153,9 @@ from .Models import (
     ConfigurationField,
     Asset,
     GetAsset,
+    GetTokenAccounts,
+    HeliusTokenAccount,
+    HeliusTokenAccounts,
     UseMethod,
     TokenInfo,
     Interface,
@@ -316,6 +320,7 @@ __all__ = [
     "ParsedInstruction",
     "KnownParsedInstruction",
     "AccountSource",
+    "ParsedAccountKey",
 
     # Data Types
     "Int8",
@@ -354,12 +359,15 @@ __all__ = [
     # DAS
     "Asset",
     "GetAsset",
+    "GetTokenAccounts",
     "UseMethod",
     "TokenInfo",
     "Interface",
     "RoyaltyModel",
     "AuthorityScope",
     "OwnershipModel",
+    "HeliusTokenAccount",
+    "HeliusTokenAccounts",
 
     # Websockets
     "WsGetVote",

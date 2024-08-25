@@ -31,6 +31,7 @@ Exports Models:
 - #### TransactionEncoding
 - #### RewardType
 - #### AccountSource
+- #### ParsedAccountKey
 """
 from .Methods.GetSignaturesForAddress import GetSignaturesForAddress
 from .Methods.GetSignatureStatuses import GetSignatureStatus
@@ -65,6 +66,7 @@ from .Transaction import (
     TransactionEncoding,
     RewardType,
     AccountSource,
+    ParsedAccountKey,
 )
 
 __all__ = [
@@ -100,4 +102,5 @@ __all__ = [
     "TransactionEncoding",
     "RewardType",
     "AccountSource",
+    "ParsedAccountKey",
 ]

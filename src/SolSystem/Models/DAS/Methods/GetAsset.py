@@ -1,5 +1,4 @@
 from typing import Any
-from termcolor import colored
 from pydantic.alias_generators import to_camel
 from pydantic import (
     BaseModel,

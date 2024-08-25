@@ -74,6 +74,7 @@ class RPCMethodName(StrEnum):
 
 class DasMethodName(StrEnum): 
 	ASSET = "getAsset"
+	GET_TOKEN_ACCOUNTS = "getTokenAccounts"
 
 
 

@@ -3,6 +3,7 @@ Methods that fall outside standrd Solana RPC API and are instead defined
 in the metaplex standard.
 Exports RPC Methods:
 - #### GetAsset
+- #### GetTokenAccounts
 ---
 Exports Models:
 - #### Asset
@@ -11,10 +12,13 @@ Exports Models:
 - #### OwnershipModel
 - #### RoyaltyModel
 - #### UseMethod
+- #### HeliusTokenAccount
+- #### HeliusTokenAccounts
 """
 
 
 from .Methods.GetAsset import GetAsset
+from .Methods.GetTokenAccounts import GetTokenAccounts
 
 from .Asset import (
     Asset,
@@ -25,10 +29,15 @@ from .Asset import (
     UseMethod,
 )
 from .HeliusAsset import TokenInfo
+from .HeliusAccount import (
+    HeliusTokenAccount,
+    HeliusTokenAccounts,
+)
 
 __all__ = [
     # Methods
     "GetAsset",
+    "GetTokenAccounts",
 
     # Models
     "Asset",
@@ -38,4 +47,6 @@ __all__ = [
     "RoyaltyModel",
     "UseMethod",
     "TokenInfo",
+    "HeliusTokenAccount",
+    "HeliusTokenAccounts",
 ]

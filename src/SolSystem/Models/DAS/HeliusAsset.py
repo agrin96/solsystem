@@ -18,17 +18,17 @@ class MintExtensions(BaseModel):
     """### Summary
     Non metaplex standard information as defined in helius
     [documentation](https://docs.helius.dev/compression-and-das-api/digital-asset-standard-das-api/get-asset#inscriptions-and-spl-20)"""
-    confidential_transfer_mint: ConfidentialTransferMint
-    confidential_transfer_fee_config: ConfidentialTransferFee
-    transfer_fee_config: TransferFee
-    metadata_pointer: MetadataPointer
-    mint_close_authority: MintCloseAuthority
-    permanent_delegate: PermanentDelegate
-    transfer_hook: TransferHook
-    interest_bearing_config: InterestBearing
-    default_account_state: str
-    confidential_transfer_account: ConfidentialTransferAccount
-    metadata: Metadata
+    confidential_transfer_mint      : ConfidentialTransferMint | None    = None
+    confidential_transfer_fee_config: ConfidentialTransferFee | None     = None
+    transfer_fee_config             : TransferFee | None                 = None
+    metadata_pointer                : MetadataPointer | None             = None
+    mint_close_authority            : MintCloseAuthority | None          = None
+    permanent_delegate              : PermanentDelegate | None           = None
+    transfer_hook                   : TransferHook | None                = None
+    interest_bearing_config         : InterestBearing | None             = None
+    default_account_state           : str | None                         = None
+    confidential_transfer_account   : ConfidentialTransferAccount | None = None
+    metadata                        : Metadata | None                    = None
 
 
 

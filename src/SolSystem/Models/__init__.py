@@ -157,6 +157,7 @@ from .Transactions import (
     ParsedInstruction,
     KnownParsedInstruction,
     AccountSource,
+    ParsedAccountKey,
 )
 from .Common import (
     Int8,
@@ -192,6 +193,7 @@ from .Common import (
 )
 from .DAS import (
     GetAsset,
+    GetTokenAccounts,
     Asset,
     Interface,
     AuthorityScope,
@@ -199,6 +201,8 @@ from .DAS import (
     RoyaltyModel,
     UseMethod,
     TokenInfo,
+    HeliusTokenAccount,
+    HeliusTokenAccounts,
 )
 from .Websockets import (
     WsGetAccountInfo,
@@ -357,6 +361,7 @@ __all__ = [
     "ParsedInstruction",
     "KnownParsedInstruction",
     "AccountSource",
+    "ParsedAccountKey",
 
     # Data Types
     "Int8",
@@ -394,6 +399,7 @@ __all__ = [
 
     # DAS
     "GetAsset",
+    "GetTokenAccounts",
     "Asset",
     "Interface",
     "AuthorityScope",
@@ -401,6 +407,8 @@ __all__ = [
     "RoyaltyModel",
     "UseMethod",
     "TokenInfo",
+    "HeliusTokenAccount",
+    "HeliusTokenAccounts",
 
     # Websockets
     "WsGetAccountInfo",

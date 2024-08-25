@@ -7,7 +7,7 @@ retrieving asset data.
 
 
 ## Why + Plans
-After trying the official solana python + solders packages I was left feeling like they were an afterthought of development and weren't supported too well. The API wasn't to my liking so I decided to develop something more pythonic and cleaner.
+After trying the official solana python + solders packages I was left feeling like they were an afterthought of development and weren't supported too well. The API wasn't to my liking, so I decided to develop something more pythonic and cleaner.
 
 As I work on solana projects I plan to add further functionality to this API. One of the goals is to integrate a DEX API as well, likely from jupiter.
 
@@ -70,7 +70,7 @@ async def main():
         print(F"Sol Value: {response.value.sol}")
 ```
 
-The `Websocket` client works as a factory which creates subscribed clients. Each call to `subscribe` on the factory will create a sepearte object that manages the subscription for its specific method. We then use an async iterator or a loop to recieve messages on each subscription.
+The `Websocket` client works as a factory which creates subscribed clients. Each call to `subscribe` on the factory will create a separate object that manages the subscription for its specific method. We then use an async iterator or a loop to receive messages on each subscription.
 
 
 ```python

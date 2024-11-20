@@ -54,7 +54,7 @@ class AsyncClient:
     
 
     async def request[T: Response](self, method: Method[T]) -> T:        
-        if self.limit_api_credits == -1:
+        if self.limit_api_credits != -1:
             method_cost = MethodAPICost[method.metadata.method]
             api_credits = self.current_api_credits + method_cost
             if api_credits > self.limit_api_credits:
@@ -137,7 +137,7 @@ class SyncClient:
 
 
     def request[T: Response](self, method: Method[T]) -> T:
-        if self.limit_api_credits == -1:
+        if self.limit_api_credits != -1:
             method_cost = MethodAPICost[method.metadata.method]
             api_credits = self.current_api_credits + method_cost
             if api_credits > self.limit_api_credits:

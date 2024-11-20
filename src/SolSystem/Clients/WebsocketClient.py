@@ -12,7 +12,7 @@ from websockets import (
 )
 
 from pydantic import WebsocketUrl
-from SolSystem.Models.Common.Method import WsMethod
+from SolSystem.Models.Common.Method import WsMethod, MethodAPICost
 from SolSystem.Models.Common.Response import WsResponse
 
 
@@ -48,7 +48,9 @@ class WebsocketMethod[T: WsResponse]:
 			method: WsMethod[T],
 			connection_settings: dict[str, Any],
 			parent: WebsocketClient,
-			message_limit: int = -1
+			message_limit: int = -1,
+			used_api_cedits: int = 0,
+			limit_api_credits: int = 500_000,
 		) -> None:
 		"""### Summary"""
 		self.session: WebSocketClientProtocol | None = None
@@ -59,6 +61,8 @@ class WebsocketMethod[T: WsResponse]:
 		self.message_limit: int = message_limit
 		self.message_count: int = 0
 
+		self.current_api_credits = used_api_cedits
+		self.limit_api_credits = limit_api_credits
 		self.connection_object: connect = connect(** connection_settings)
 
 
@@ -112,6 +116,13 @@ class WebsocketMethod[T: WsResponse]:
 
 
 	async def recieve(self) -> T:
+		if self.limit_api_credits != -1:
+			method_cost = MethodAPICost[self.method.metadata.method]
+			api_credits = self.current_api_credits + method_cost
+			if api_credits > self.limit_api_credits:
+				raise RuntimeError("Exceed API credit usage")
+			self.current_api_credits = api_credits
+
 		if self.session is None:
 			raise MethodNotConnectedError()
 		raw_return = await self.session.recv()

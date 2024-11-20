@@ -7,7 +7,7 @@ from typing import Self
 from pydantic import HttpUrl
 from types import TracebackType
 from termcolor import cprint, colored
-from SolSystem.Models.Common import Method, Response
+from SolSystem.Models.Common import Method, Response, MethodAPICost
 
 
 type Seconds = float
@@ -21,7 +21,10 @@ class AsyncClient:
             self,
             rpc_endpoint: HttpUrl,
             global_headers: dict[str,str] | None = None,
-            timeout: float = 10) -> None:
+            timeout: float = 10,
+            used_api_cedits: int = 0,
+            limit_api_credits: int = 500_000,
+        ):
         """### Summary
         Solana Async Client.
         
@@ -31,8 +34,16 @@ class AsyncClient:
         `global_headers:` Headers to use for every subsequent request in this
         session.
 
-        `timeout:` Default request timeout."""
+        `timeout:` Default request timeout.
+        
+        `used_api_cedits` The number of api credits already used by your account
+        
+        `limit_api_credits` The maximum api credits to use. You may set this to
+        the account limit, or use your own limit to prevent runaway querying. Set
+        to -1 to disable the limit."""
         self.base_rpc_url = rpc_endpoint
+        self.current_api_credits = used_api_cedits
+        self.limit_api_credits = limit_api_credits
 
         self.global_headers = {"Content-Type": "application/json"}
         if global_headers is not None:
@@ -42,7 +53,14 @@ class AsyncClient:
 
     
 
-    async def request[T: Response](self, method: Method[T]) -> T:
+    async def request[T: Response](self, method: Method[T]) -> T:        
+        if self.limit_api_credits == -1:
+            method_cost = MethodAPICost[method.metadata.method]
+            api_credits = self.current_api_credits + method_cost
+            if api_credits > self.limit_api_credits:
+                raise RuntimeError("Exceed API credit usage")
+            self.current_api_credits = api_credits
+        
         response = None
         for sleep_time in self._retry_curve:
             response = await self.session.post(
@@ -88,7 +106,10 @@ class SyncClient:
             self,
             rpc_endpoint: HttpUrl,
             global_headers: dict[str,str] | None = None,
-            timeout: float = 10) -> None:
+            timeout: float = 10,
+            used_api_cedits: int = 0,
+            limit_api_credits: int = 500_000,
+        ):
         """### Summary
         Solana Async Client.
         
@@ -98,8 +119,15 @@ class SyncClient:
         `global_headers:` Headers to use for every subsequent request in this
         session.
 
-        `timeout:` Default request timeout."""
+        `timeout:` Default request timeout.
+        
+        `used_api_cedits` The number of api credits already used by your account
+        
+        `limit_api_credits` The maximum api credits to use. You may set this to
+        the account limit, or use your own limit to prevent runaway querying."""
         self.base_rpc_url = rpc_endpoint
+        self.current_api_credits = used_api_cedits
+        self.limit_api_credits = limit_api_credits
         
         self.global_headers = {"Content-Type": "application/json"}
         if global_headers is not None:
@@ -109,6 +137,13 @@ class SyncClient:
 
 
     def request[T: Response](self, method: Method[T]) -> T:
+        if self.limit_api_credits == -1:
+            method_cost = MethodAPICost[method.metadata.method]
+            api_credits = self.current_api_credits + method_cost
+            if api_credits > self.limit_api_credits:
+                raise RuntimeError("Exceed API credit usage")
+            self.current_api_credits = api_credits
+
         response = None
         for sleep_time in self._retry_curve:
             response = self.session.post(

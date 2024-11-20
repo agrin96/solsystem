@@ -78,7 +78,7 @@ class DasMethodName(StrEnum):
 
 
 
-@dataclass
+@dataclass(eq = True, frozen = True)
 class WsMethodNameMixin:
 	subscribe: str
 	unsubscribe: str
@@ -96,6 +96,76 @@ class WsMethodName(WsMethodNameMixin, Enum):
 	SLOTS_UPDATES      = "slotsUpdatesSubscribe", "slotsUpdatesUnsubscribe"
 	VOTE               = "voteSubscribe",         "voteUnsubscribe"
 	HELIUS_TRANSACTION = "transactionSubscribe",  "transactionUnsubscribe"
+
+
+
+MethodAPICost = {
+	RPCMethodName.ACCOUNT_INFO: 1,
+	RPCMethodName.BALANCE: 1,
+	RPCMethodName.BLOCK: 10,
+	RPCMethodName.BLOCK_COMMITMENT: 1,
+	RPCMethodName.BLOCK_HEIGHT: 1,
+	RPCMethodName.BLOCK_PRODUCTION: 1,
+	RPCMethodName.BLOCK_TIME: 10,
+	RPCMethodName.BLOCKS: 10,
+	RPCMethodName.BLOCKS_WITH_LIMIT: 1,
+	RPCMethodName.CLUSTER_NODES: 1,
+	RPCMethodName.EPOCH_INFO: 1,
+	RPCMethodName.EPOCH_SCHEDULE: 1,
+	RPCMethodName.FEE_FOR_MESSAGE: 1,
+	RPCMethodName.FIRST_AVAILABLE_BLOCK: 1,
+	RPCMethodName.GENESIS_HASH: 1,
+	RPCMethodName.HEALTH: 1,
+	RPCMethodName.HIGHEST_SNAPSHOT_SLOT: 1,
+	RPCMethodName.IDENTITY: 1,
+	RPCMethodName.INFLATION_GOVERNOR: 1,
+	RPCMethodName.INFLATION_RATE: 1,
+	RPCMethodName.INFLATION_REWARD: 10,
+	RPCMethodName.LARGEST_ACCOUNTS: 1,
+	RPCMethodName.LATEST_BLOCKHASH: 1,
+	RPCMethodName.LEADER_SCHEDULE: 1,
+	RPCMethodName.MAX_RETRANSMIT_SLOT: 1,
+	RPCMethodName.MAX_SHRED_INSERT_SLOT: 1,
+	RPCMethodName.MINIMUM_BALANCE_FOR_RENT_EXEMPTION: 1,
+	RPCMethodName.MULTIPLE_ACCOUNTS: 1,
+	RPCMethodName.PROGRAM_ACCOUNTS: 1,
+	RPCMethodName.RECENT_PERFORMANCE_SAMPLES: 1,
+	RPCMethodName.RECENT_PRIORITIZATION_FEES: 1,
+	RPCMethodName.SIGNATURE_STATUSES: 1,
+	RPCMethodName.SIGNATURES_FOR_ADDRESS: 10,
+	RPCMethodName.SLOT: 1,
+	RPCMethodName.SLOT_LEADER: 1,
+	RPCMethodName.SLOT_LEADERS: 1,
+	RPCMethodName.STAKE_ACTIVATION: 1,
+	RPCMethodName.STAKE_MINIMUM_DELEGATION: 1,
+	RPCMethodName.SUPPLY: 1,
+	RPCMethodName.TOKEN_ACCOUNT_BALANCE: 1,
+	RPCMethodName.TOKEN_ACCOUNTS_BY_DELEGATE: 1,
+	RPCMethodName.TOKEN_ACCOUNTS_BY_OWNER: 1,
+	RPCMethodName.TOKEN_LARGEST_ACCOUNTS: 1,
+	RPCMethodName.TOKEN_SUPPLY: 1,
+	RPCMethodName.TRANSACTION: 10,
+	RPCMethodName.TRANSACTION_COUNT: 1,
+	RPCMethodName.VERSION: 1,
+	RPCMethodName.VOTE_ACCOUNTS: 1,
+	RPCMethodName.IS_BLOCKHASH_VALID: 1,
+	RPCMethodName.MINIMUM_LEDGER_SLOT: 1,
+	RPCMethodName.REQUEST_AIRDROP: 1,
+	RPCMethodName.SEND_TRANSACTION: 1,
+	RPCMethodName.SIMULATE_TRANSACTION: 1,
+	DasMethodName.ASSET: 10,
+	DasMethodName.GET_TOKEN_ACCOUNTS: 10,
+	WsMethodName.ACCOUNT: 1,
+	WsMethodName.BLOCK: 1,
+	WsMethodName.LOGS: 1,
+	WsMethodName.PROGRAM: 1,
+	WsMethodName.ROOT: 1,
+	WsMethodName.SIGNATURE: 1,
+	WsMethodName.SLOT: 1,
+	WsMethodName.SLOTS_UPDATES: 1,
+	WsMethodName.VOTE: 1,
+	WsMethodName.HELIUS_TRANSACTION: 1,
+}
 
 
 

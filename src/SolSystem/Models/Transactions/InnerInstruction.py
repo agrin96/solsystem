@@ -82,9 +82,11 @@ class KnownParsedInstruction(BaseModel):
 
     `program_id:` The address of the program being invoked
 
-    `info:` The parsed instruction data if available.
+    `info:` The parsed instruction data if available. Will be None during failed
+    instructions
     
-    `type:` The parsed instruction name if available.
+    `type:` The parsed instruction name if available. Will be None during failed
+    instructions
 
     `accounts:` Accounts associated with the transaction if relavent.
 
@@ -96,8 +98,14 @@ class KnownParsedInstruction(BaseModel):
 
     program_id: PublicKey
     program: str
-    info: dict[str, Any] = Field(validation_alias = AliasPath("parsed", "info"))
-    type: str = Field(validation_alias = AliasPath("parsed", "type"))
+    info: dict[str, Any] = Field(
+        validation_alias = AliasPath("parsed", "info"),
+        default = None
+    )
+    type: str = Field(
+        validation_alias = AliasPath("parsed", "type"),
+        default = None
+    )
     stack_height: int | None = None
 
     @field_validator("*", mode = "before")

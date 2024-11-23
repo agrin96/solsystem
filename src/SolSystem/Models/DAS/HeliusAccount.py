@@ -37,6 +37,7 @@ class HeliusTokenAccounts(BaseModel):
 
 
 
+
 class HeliusTokenAccount(BaseModel):
     """### Summary
     A slightly modified version of the standard TokenAccount return.
@@ -48,7 +49,8 @@ class HeliusTokenAccount(BaseModel):
     
     `owner:` The owning account for the token account
     
-    `amount:` The owned amount of a token
+    `amount:` The owned amount of a token. This can sometimes be omitted. If it
+    is omited from the transaction response then we will treat it as 0 balance.
     
     `delegated_amount:` The delegated amount.
     
@@ -61,6 +63,6 @@ class HeliusTokenAccount(BaseModel):
     address: PublicKey
     mint: PublicKey
     owner: PublicKey
-    amount: UInt64
+    amount: UInt64 = 0
     delegated_amount: UInt64
     frozen: bool

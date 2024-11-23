@@ -1,6 +1,6 @@
 [project]
 name = "solsystem"
-version = "1.0.6"
+version = "1.0.7"
 description = "Type-safe Solana RPC http/websocket API with a focus on Helius and built on Pydantic models."
 authors = [
     {name = "Aleksandr Grin", email = "bytebrushsoftware@gmail.com"},

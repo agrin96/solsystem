@@ -51,13 +51,15 @@ class WebsocketMethod[T: WsResponse]:
 			message_limit: int = -1,
 			used_api_cedits: int = 0,
 			limit_api_credits: int = 500_000,
+			parse_responses: bool = True,
 		) -> None:
 		"""### Summary"""
 		self.session: WebSocketClientProtocol | None = None
 		self.method: WsMethod[T] = method
 		self.unsubscribe_id: int | None = None
 		self.parent = parent
-		
+		self.parse_responses = parse_responses
+
 		self.message_limit: int = message_limit
 		self.message_count: int = 0
 
@@ -129,6 +131,8 @@ class WebsocketMethod[T: WsResponse]:
 		cprint(json.dumps(json.loads(raw_return), indent = 2), "light_yellow")
 
 		assert self.method, colored("self.method cannot be Null.", "red")
+		if not self.parse_responses:
+			return json.loads(raw_return)
 		return self.method.response_type(** json.loads(raw_return))
 
 

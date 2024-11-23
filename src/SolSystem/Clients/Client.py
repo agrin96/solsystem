@@ -24,6 +24,7 @@ class AsyncClient:
             timeout: float = 10,
             used_api_cedits: int = 0,
             limit_api_credits: int = 500_000,
+            parse_responses: bool = True,
         ):
         """### Summary
         Solana Async Client.
@@ -40,10 +41,14 @@ class AsyncClient:
         
         `limit_api_credits` The maximum api credits to use. You may set this to
         the account limit, or use your own limit to prevent runaway querying. Set
-        to -1 to disable the limit."""
+        to -1 to disable the limit.
+        
+        `parse_responses` Whether to parse responses as pydantic models or leave
+        them as raw dictionaries."""
         self.base_rpc_url = rpc_endpoint
         self.current_api_credits = used_api_cedits
         self.limit_api_credits = limit_api_credits
+        self.parse_response = parse_responses
 
         self.global_headers = {"Content-Type": "application/json"}
         if global_headers is not None:
@@ -82,6 +87,9 @@ class AsyncClient:
                 "Exceeded acceptable retries and request still failed."
             )
 
+        if not self.parse_response:
+            return response.json()
+        
         response = method.response_type(**response.json())
         if response.id != method.metadata.id:
             raise RuntimeError("Invalid id")
@@ -109,6 +117,7 @@ class SyncClient:
             timeout: float = 10,
             used_api_cedits: int = 0,
             limit_api_credits: int = 500_000,
+            parse_responses: bool = True,
         ):
         """### Summary
         Solana Async Client.
@@ -124,10 +133,14 @@ class SyncClient:
         `used_api_cedits` The number of api credits already used by your account
         
         `limit_api_credits` The maximum api credits to use. You may set this to
-        the account limit, or use your own limit to prevent runaway querying."""
+        the account limit, or use your own limit to prevent runaway querying.
+        
+        `parse_responses` Whether to parse responses as pydantic models or leave
+        them as raw dictionaries."""
         self.base_rpc_url = rpc_endpoint
         self.current_api_credits = used_api_cedits
         self.limit_api_credits = limit_api_credits
+        self.parse_response = parse_responses
         
         self.global_headers = {"Content-Type": "application/json"}
         if global_headers is not None:
@@ -165,6 +178,8 @@ class SyncClient:
                 "Exceeded acceptable retries and request still failed."
             )
 
+        if not self.parse_response:
+            return response.json()
         try:
             response = method.response_type(**response.json())
         except Exception:
